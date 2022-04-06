@@ -4,6 +4,7 @@ const port = 5000;                  //Save the port number where your server wil
 const mongoose = require("mongoose");
 const Books = require("./routers/books")
 const Users = require("./routers/user")
+const Auth = require("./routers/auth")
 
 app.use(express.json());
 //Idiomatic expression in express to route and respond to a client request
@@ -33,6 +34,7 @@ db.once("open", function () {
 
 app.use('/api/books', Books);
 app.use('/api/users', Users);
+app.use('/api/auth', Auth);
 
 app.listen(port, () => {            //server starts listening for any attempts from a client to connect at port: {port}
     console.log(`Now listening on port ${port}`);
