@@ -22,24 +22,24 @@ const getSpecUser = async (req, res) => {
     }
 }
 
-const createNewUsers = async (req, res) => {
-    console.log(req.body);
-    const newUsers = new Users({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-        admin: req.body.admin
-    })
-    try {
-        await newUsers.save();
+// const createNewUsers = async (req, res) => {
+//     console.log(req.body);
+//     const newUsers = new Users({
+//         name: req.body.name,
+//         email: req.body.email,
+//         password: req.body.password,
+//         admin: req.body.admin
+//     })
+//     try {
+//         await newUsers.save();
 
-        res.status(201).json(newUsers);
+//         res.status(201).json(newUsers);
 
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
+//     } catch (error) {
+//         res.status(400).json({ message: error.message });
+//     }
 
-}
+// }
 
 const updateUsers = async (req, res) => {
     const roll = req.params.roll;
@@ -96,7 +96,7 @@ const deleteUsers = async (req, res) => {
 
 
 module.exports.getAllUsers = getAllUsers;
-module.exports.createNewUsers = createNewUsers;
+//module.exports.createNewUsers = createNewUsers;
 module.exports.getSpecUser = getSpecUser;
 module.exports.updateUsers = updateUsers;
 module.exports.deleteUsers = deleteUsers;

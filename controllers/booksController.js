@@ -31,9 +31,14 @@ const createNewBooks = async (req, res) => {
         status: req.body.status
     })
     try {
-        await newBooks.save();
+        if (!(req.body.status == "borrowed" || req.body.status == "available")) {
+            res.status(400).json("Only borrowed or available for the status");
+        } else {
+            await newBooks.save();
 
-        res.status(201).json(newBooks);
+            res.status(201).json(newBooks);
+        }
+
 
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -44,17 +49,22 @@ const createNewBooks = async (req, res) => {
 const updateBooks = async (req, res) => {
     const roll = req.params.roll;
     try {
-        await Books.findOneAndUpdate({
-            roll: roll,
-        },
-            {
-                title: req.body.title,
-                author: req.body.author,
-                createdOn: req.body.createdOn,
-                status: req.body.status
-            }
-        )
-        res.status(200).json("Update Successfully");
+        if (!(req.body.status == "borrowed" || req.body.status == "available")) {
+            res.status(400).json("Only borrowed or available");
+        }
+        else {
+            await Books.findOneAndUpdate({
+                roll: roll,
+            },
+                {
+                    title: req.body.title,
+                    author: req.body.author,
+                    createdOn: req.body.createdOn,
+                    status: req.body.status
+                }
+            )
+            res.status(200).json("Update Successfully");
+        }
 
     } catch (error) {
         res.status(401).json({ message: error.message });

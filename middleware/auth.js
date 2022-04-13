@@ -1,26 +1,24 @@
 const Users = require("../models/Users");
 const jwt = require('jsonwebtoken');
 
-const config = process.env;
 
 const verifyToken = (req, res, next) => {
-    const authHeader = req.headers.authorization;
-
-    if (authHeader) {
-        const token = authHeader.split(' ')[1];
-
-        jwt.verify(token, config.ACCESS_TOKEN_SECRET, (err, user) => {
+    const token = req.header('Authorization');
+    //const refreshToken = req.cookies.refreshToken;
+    if (token) {
+        const accessToken = token.split(" ")[1];
+        jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
             if (err) {
-                return res.sendStatus(403);
+                res.status(403).json("Token is not valid!");
             }
-            const user = await Users.findOne({ roll: decode.roll });
             req.user = user;
             next();
         });
     } else {
-        res.sendStatus(401);
+        res.status(401).json("You're not authenticated");
     }
 }
+// check if itself or admin
 const verifyRole = (req, res, next) => {
     verifyToken(req, res, () => {
         if (req.user.roll == req.params.roll || req.user.admin) {
@@ -36,7 +34,7 @@ const verifyAdmin = (req, res, next) => {
         if (req.user.admin) {
             next();
         } else {
-            return res.status(403);
+            res.status(403).json("You're not allowed to do that!");
         }
     });
 }
